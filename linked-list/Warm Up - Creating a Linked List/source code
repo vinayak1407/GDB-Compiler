@@ -1,0 +1,187 @@
+#include<iostream>
+using namespace std; 
+
+class node 
+{
+   public: 
+       int data; 
+       node*next; 
+       
+       node(int data){
+           this->data = data;   // this is the pointer which refers to the current node object 
+           next = NULL; 
+       }
+}; 
+// -------------------Linked List-------------// 
+void insertAtHead(node* &head,int data)  //this method is going to accept the head of the linked list, we are actually passing by address therefore we have a & before head  
+{
+    if(head==NULL)
+    {
+        head = new node(data); 
+        return; 
+    }
+    // otherwise 
+    node *n = new node(data); 
+    n->next=head; 
+    head = n; 
+}
+
+void insertInMiddle(node * &head, int data, int pos)
+{
+    if(pos==0)
+    {
+        insertAtHead(head,data); 
+    }
+    else 
+    {
+        node*temp = head; 
+        for(int jump = 1; jump<=pos-1;jump++)
+        {
+            temp = temp->next; 
+        }
+        
+        node * n = new node(data); 
+        n->next = temp->next; 
+        temp->next = n; 
+    }
+    
+}
+
+node* recReverse(node *head)
+{
+    //base case     
+    if(head == NULL or head->next==NULL)
+    {
+        return head; 
+    }
+    //otherwise 
+    node * sHead = recReverse(head->next); 
+    head->next->next = head; 
+    head->next = NULL ; 
+    return sHead; 
+}
+
+void reverse(node*&head)
+{
+    node*prev= NULL; 
+    node*current = head; 
+    node*temp; 
+    
+    while(current!=NULL)
+    {
+        //store next
+        temp = current->next; 
+        //update the current
+        current->next =prev; 
+        
+        //prev and current 
+        prev = current; 
+        current = temp; 
+    }
+    
+    head = prev;
+    return; 
+}
+
+node* kReverse(node *head,int k)
+{
+    //base case 
+    if(head==NULL)
+    {
+        return NULL; 
+    }
+    
+    //reverse the first k nodes 
+    node*prev= NULL; 
+    node*current = head; 
+    node*temp; 
+    int cnt = 1; 
+    
+    while(current!=NULL and cnt<=k)   // reversing here exactly first k nodes 
+    {
+        //store next
+        temp = current->next; 
+        //update the current
+        current->next =prev; 
+        
+        //prev and current 
+        prev = current; 
+        current = temp; 
+        cnt++; 
+    }
+     
+    if(temp!=NULL){
+        head->next = kReverse(temp,k); 
+    }   
+    return prev; 
+}
+node* merge (node *a,node *b)
+{
+    // Complete this method 
+    // base case 
+    if(a==NULL)
+    {
+        return b; 
+    }
+    if(b==NULL)
+    {
+        return a; 
+    }
+    
+    // rec case 
+    node * c = ????                                  // temporary head pointer, it will be created in every recursive call 
+    if(a->data < b->data)
+    {
+       c = a;  
+       c->next = merge(a->next,b);     
+    }
+    else 
+    {
+        c = b; 
+        c->next = merge(a,b->next); 
+    }
+    return c;
+}
+
+void printLL(node* head)
+{
+    while(head!=NULL)
+    {
+        cout<<head->data<<"-->"; 
+        head=head->next; 
+    }
+    cout<<endl; 
+}
+
+// In those functions where you are updating the head, either you should return the value or you should pass it by reference
+// Benefit of iterative code is that it does not use up stack memory. 
+int main()
+{
+    // node* head = NULL;       // Recursive functions take extra space because of stack memory 
+    // insertAtHead(head,4); 
+    // insertAtHead(head,3);  
+    // insertAtHead(head,2);  
+    // insertAtHead(head,1);  
+    // insertAtHead(head,0); 
+    // insertInMiddle(head,100,3); // insert a value 100 after 3 nodes  
+    // printLL(head); // we are passing by value    
+    // head = kReverse(head); // reversing in parts of 3  
+    // printLL(head); 
+    // return 0;
+    
+    
+       node* a = NULL;        
+       a.insertAtHead(head,4); 
+       a.insertAtHead(head,3);  
+       a.insertAtHead(head,2);  
+       a.insertAtHead(head,1);
+       
+       node*b=NULL; 
+       b.insertAtHead(head,0); 
+       b.insertAtHead(head,0); 
+       b.insertAtHead(head,0); 
+ 
+       node*head = merge(a,b); 
+       printLL(head); 
+    
+}

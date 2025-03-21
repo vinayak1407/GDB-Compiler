@@ -1,0 +1,51 @@
+#include <iostream>
+#include<unordered_map>
+#include<vector>
+using namespace std;
+
+int count_triplets (vector<int> arr, int r) {
+  
+  int n = arr.size();  
+  unordered_map<long,long> right,left;     // taking O(1) time 
+  
+  //Initialise the Right map with freq, left map = 0 
+  for(auto x : arr)
+  {
+    right[x]++;     // taking O(N) time 
+    left[x] = 0;   // frequency of every element in the left map is 0 and in the right map it is equal to the actual frequency. 
+  }
+  
+  int ans = 0; 
+  //compute by iterating left to right 
+  for(int i = 0; i < n; i++) //taking O(N) time        
+  {
+      right[arr[i]]--;        // reduce the frequency of this from right by a factor of 1. 
+      
+      if(arr[i]%r==0)    // only then we can have three numbers a,b and c which are in GP. 
+      {
+        long b = arr[i];   
+        long a = arr[i]/r; 
+        long c = arr[i]*r;   
+        
+        ans += left[a]*right[c];  // we are multiplying these two to get the number of ways in which we can form a GP   
+      }
+      
+      left[arr[i]]++; 
+  }
+  return ans;  
+  }
+
+int main() {
+
+	int n,r;
+	cin>>n>>r;
+	vector<int> arr(n,0);
+	
+	for(int i=0; i<n; i++) {
+		cin>>arr[i];
+	}
+	
+	cout<<count_triplets(arr, P3);
+	
+	return 0;
+}
